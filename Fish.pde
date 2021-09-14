@@ -8,6 +8,9 @@ class Fish {
     velocity = new PVector(0,0);
     acceleration = new PVector(0,0);
   }
+  void addMass(float m_) {
+    mass += m_;
+  }
   boolean isInside(Liquid l) {
   if (location.x>l.x && location.x<l.x+l.w && location.y>l.y && location.y<l.y+l.h)
     {

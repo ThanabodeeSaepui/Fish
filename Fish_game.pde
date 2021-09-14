@@ -1,3 +1,4 @@
+import java.util.Arrays;
 Liquid liquid;
 Fish fish;
 ArrayList<Food> foods;
@@ -15,8 +16,12 @@ void draw() {
     Food f = new Food(mouseX,mouseY,0.8);
     foods.add(f);
   }
-  
-  for (Food f: foods) {
+
+  for (int i = 0; i < foods.size(); i++) {
+    Food f = foods.get(i);
+    if (f.eaten(fish)) {
+      foods.remove(i);
+    }
     if (f.isInside(liquid)) {
       f.drag(liquid);
     }
@@ -32,6 +37,7 @@ void draw() {
     f.update();
     f.display();
     f.checkEdges();
+    
   }
   fish.display();
 }

@@ -9,6 +9,19 @@ class Food {
     velocity = new PVector(0,0);
     acceleration = new PVector(0,0);
   }
+  boolean eaten(Fish fish){
+    float x = location.array()[0];
+    float y = location.array()[1];
+    float fish_x = fish.location.array()[0];
+    float fish_y = fish.location.array()[1];
+    float fish_size = fish.mass*10;
+    if ((fish_x - fish_size < x) && (x < fish_x + fish_size)) {
+      if ((fish_y - fish_size < y) && (y < fish_y + fish_size)) {
+        return true;
+      }
+    }
+    return false;
+  }
   void applyForce(PVector force) {
     PVector f = PVector.div(force,mass);
     acceleration.add(f);
