@@ -9,16 +9,24 @@ void setup() {
   fish = new Fish();
   foods = new ArrayList<Food>();
 }
+void mousePressed() {
+  Food f = new Food(mouseX,mouseY,0.8);
+  foods.add(f);
+}
 void draw() {
   background(255);
   liquid.display();
-  if (mousePressed) {
-    Food f = new Food(mouseX,mouseY,0.8);
-    foods.add(f);
-  }
-
+  float shortest = sqrt(width*width + height*height);
+  PVector route;
+  int f_i;
   for (int i = 0; i < foods.size(); i++) {
     Food f = foods.get(i);
+    float distance = f.getDistance(fish);
+    if (shortest > distance) {
+      shortest = distance;
+      f_i = i;
+      println(shortest);
+    }
     if (f.eaten(fish)) {
       foods.remove(i);
       fish.addMass(0.1);
@@ -38,7 +46,10 @@ void draw() {
     f.update();
     f.display();
     f.checkEdges();
-    
   }
+  fish.attract(new PVector(mouseX,mouseY));
+  fish.drag(liquid);
+  fish.update();
   fish.display();
+  fish.checkWater(liquid);
 }

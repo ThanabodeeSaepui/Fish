@@ -29,6 +29,7 @@ class Fish {
   void applyForce(PVector force) {
     PVector f = PVector.div(force,mass);
     acceleration.add(f);
+    update();
   }
   void drag(Liquid l) {
     float speed = velocity.mag();
@@ -38,6 +39,12 @@ class Fish {
     drag.normalize();
     drag.mult(dragMagnitude);
     applyForce(drag);
+  }
+  void attract(PVector foodLocation) {
+    PVector dir = PVector.sub(foodLocation,location);
+    dir.normalize();
+    dir.mult(0.04);
+    acceleration = dir;
   }
   void update() {
     velocity.add(acceleration);
@@ -49,7 +56,7 @@ class Fish {
     fill(175,0,255,255);
     ellipse(location.x,location.y,mass*20,mass*20);
   }
-  void checkEdges() {
+  void checkWater(Liquid l) {
     if (location.x > width) {
       location.x = width;
       velocity.x *= -1;
@@ -57,9 +64,12 @@ class Fish {
       velocity.x *= -1;
       location.x = 0;
     }
-    if (location.y > height) {
+    if (location.y + mass*10> height) {
       velocity.y *= -1;
-      location.y = height;
+      location.y = height - mass*10;
+    } else if (location.y - mass*10 < (height-l.h)) {
+      velocity.y *= -1;
+      location.y = height-l.h + mass*10;
     }
   }
 }

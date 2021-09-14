@@ -22,6 +22,14 @@ class Food {
     }
     return false;
   }
+  float getDistance(Fish fish){
+    float x = location.array()[0];
+    float y = location.array()[1];
+    float fish_x = fish.location.array()[0];
+    float fish_y = fish.location.array()[1];
+    float distance = sqrt((fish_x-x)*(fish_x-x) + (fish_y-y)*(fish_y-y));
+    return distance;
+  }
   void applyForce(PVector force) {
     PVector f = PVector.div(force,mass);
     acceleration.add(f);
