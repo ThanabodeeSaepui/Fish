@@ -18,18 +18,20 @@ void draw() {
   liquid.display();
   float shortest = sqrt(width*width + height*height);
   PVector route;
-  int f_i;
+  int f_i = 0;
   for (int i = 0; i < foods.size(); i++) {
     Food f = foods.get(i);
     float distance = f.getDistance(fish);
     if (shortest > distance) {
       shortest = distance;
       f_i = i;
-      println(shortest);
     }
     if (f.eaten(fish)) {
       foods.remove(i);
       fish.addMass(0.1);
+      if (f_i > 0){
+        f_i -= 1;
+      }
     }
     if (f.isInside(liquid)) {
       f.drag(liquid);
@@ -44,12 +46,15 @@ void draw() {
     f.applyForce(gravity);
     f.applyForce(friction);
     f.update();
-    f.display();
     f.checkEdges();
+    f.display();
   }
-  fish.attract(new PVector(mouseX,mouseY));
+  if (foods.size() > 0) {
+    Food f = foods.get(f_i);
+    fish.attract(f.location);
+  }
   fish.drag(liquid);
   fish.update();
-  fish.display();
   fish.checkWater(liquid);
+  fish.display();
 }
