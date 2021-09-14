@@ -21,6 +21,7 @@ void draw() {
     Food f = foods.get(i);
     if (f.eaten(fish)) {
       foods.remove(i);
+      fish.addMass(0.1);
     }
     if (f.isInside(liquid)) {
       f.drag(liquid);

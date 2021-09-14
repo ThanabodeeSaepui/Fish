@@ -3,6 +3,7 @@ class Fish {
   PVector velocity;
   PVector acceleration;
   float mass = 1;
+  float maxMass = 3;
   Fish(){
     location = new PVector(random(0,width),height/2);
     velocity = new PVector(0,0);
@@ -10,6 +11,12 @@ class Fish {
   }
   void addMass(float m_) {
     mass += m_;
+    massLimit();
+  }
+  void massLimit() {
+    if (mass > maxMass) {
+      mass = maxMass;
+    }
   }
   boolean isInside(Liquid l) {
   if (location.x>l.x && location.x<l.x+l.w && location.y>l.y && location.y<l.y+l.h)
