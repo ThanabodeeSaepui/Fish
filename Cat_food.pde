@@ -14,7 +14,7 @@ class Cat_food {
     float y = location.array()[1];
     float cat_x = cat.location.array()[0];
     float cat_y = cat.location.array()[1];
-    float cat_size = cat.mass*10;
+    float cat_size = cat.mass*width/30;
     if ((cat_x - cat_size < x) && (x < cat_x + cat_size)) {
       if ((cat_y - cat_size < y) && (y < cat_y + cat_size)) {
         return true;
@@ -52,9 +52,9 @@ class Cat_food {
       velocity.x *= -1;
       location.x = 0;
     }
-    if (location.y + mass*8> height) {
+    if (location.y + mass*width/60> height) {
       velocity.y *= -1;
-      location.y = height - mass*8;
+      location.y = height - mass*width/60;
     }
   }
 }

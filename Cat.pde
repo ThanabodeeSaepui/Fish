@@ -52,9 +52,9 @@ class Cat {
       velocity.x *= -1;
       location.x = 0;
     }
-    if (location.y + mass*8> height) {
+    if (location.y + mass*width/30> height) {
       velocity.y *= -1;
-      location.y = height - mass*8;
+      location.y = height - mass*width/30;
     }
   }
   void drawGame(){
@@ -95,6 +95,9 @@ class Cat {
     friction.mult(-1);
     friction.normalize();
     friction.mult(0.01);
+    float m = cat.mass;
+    PVector gravity = new PVector(0,0.1*m);
+    cat.applyForce(gravity);
     cat.applyForce(friction);
     if (cat_foods.size() > 0) {
       Cat_food f = cat_foods.get(f_i);
