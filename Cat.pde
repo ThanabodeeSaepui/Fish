@@ -6,7 +6,7 @@ class Cat {
   float maxMass = 3;
 
   Cat(){
-    location = new PVector(random(0,width),height/2);
+    location = new PVector(random(0,width),height);
     velocity = new PVector(0,0);
     acceleration = new PVector(0,0);
   }
@@ -19,14 +19,6 @@ class Cat {
       mass = maxMass;
     }
   }
-  boolean isInside(Liquid l) {
-  if (location.x>l.x && location.x<l.x+l.w && location.y>l.y && location.y<l.y+l.h)
-    {
-      return true;
-    } else {
-      return false;
-    }
-  }
   void applyForce(PVector force) {
     PVector f = PVector.div(force,mass);
     acceleration.add(f);
@@ -34,7 +26,9 @@ class Cat {
   }
 
   void attract(PVector foodLocation) {
-    PVector dir = PVector.sub(foodLocation,location);
+    PVector dir1 = new PVector(foodLocation.array()[0],0);
+    PVector dir2 = new PVector(location.array()[0],0);
+    PVector dir = PVector.sub(dir1,dir2);
     dir.normalize();
     dir.mult(0.04);
     acceleration = dir;
@@ -49,7 +43,7 @@ class Cat {
     fill(175,0,255,255);
     ellipse(location.x,location.y,mass*20,mass*20);
   }
-  void checkWater(Liquid l) {
+  void checkEdges() {
     if (location.x > width) {
       location.x = width;
       velocity.x *= -1;
@@ -57,12 +51,9 @@ class Cat {
       velocity.x *= -1;
       location.x = 0;
     }
-    if (location.y + mass*10> height) {
+    if (location.y + mass*8> height) {
       velocity.y *= -1;
-      location.y = height - mass*10;
-    } else if (location.y - mass*10 < (height-l.h)) {
-      velocity.y *= -1;
-      location.y = height-l.h + mass*10;
+      location.y = height - mass*8;
     }
   }
   void drawGame(){
@@ -85,7 +76,7 @@ class Cat {
         }
       }
 
-      float c = 0.01;
+      float c = 0.05;
       PVector friction = f.velocity.get();
       float m = f.mass;
       PVector gravity = new PVector(0,0.1*m);
@@ -98,10 +89,16 @@ class Cat {
       f.checkEdges();
       f.display();
     }
+    PVector friction = cat.velocity.get();
+    friction.mult(-1);
+    friction.normalize();
+    friction.mult(0.01);
+    cat.applyForce(friction);
     if (cat_foods.size() > 0) {
       Cat_food f = cat_foods.get(f_i);
       cat.attract(f.location);
     }
+    cat.checkEdges();
     cat.update();
     cat.display();
   }
