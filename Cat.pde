@@ -1,12 +1,11 @@
-  
-class Fish {
+class Cat {
   PVector location;
   PVector velocity;
   PVector acceleration;
   float mass = 1;
   float maxMass = 3;
-  Liquid liquid = new Liquid(0, height*1/5, width, height*4/5, 0.1);;
-  Fish(){
+
+  Cat(){
     location = new PVector(random(0,width),height/2);
     velocity = new PVector(0,0);
     acceleration = new PVector(0,0);
@@ -33,15 +32,7 @@ class Fish {
     acceleration.add(f);
     update();
   }
-  void drag(Liquid l) {
-    float speed = velocity.mag();
-    float dragMagnitude = l.c * speed * speed;
-    PVector drag = velocity.get();
-    drag.mult(-1);
-    drag.normalize();
-    drag.mult(dragMagnitude);
-    applyForce(drag);
-  }
+
   void attract(PVector foodLocation) {
     PVector dir = PVector.sub(foodLocation,location);
     dir.normalize();
@@ -76,27 +67,24 @@ class Fish {
   }
   void drawGame(){
     background(255);
-    liquid.display();
+
     float shortest = sqrt(width*width + height*height);
-    PVector route;
     int f_i = 0;
-    for (int i = 0; i < foods.size(); i++) {
-      Food f = foods.get(i);
-      float distance = f.getDistance(fish);
+    for (int i = 0; i < cat_foods.size(); i++) {
+      Cat_food f = cat_foods.get(i);
+      float distance = f.getDistance(cat);
       if (shortest > distance) {
         shortest = distance;
         f_i = i;
       }
-      if (f.eaten(fish)) {
-        foods.remove(i);
-        fish.addMass(0.1);
+      if (f.eaten(cat)) {
+        cat_foods.remove(i);
+        cat.addMass(0.1);
         if (f_i > 0){
           f_i -= 1;
         }
       }
-      if (f.isInside(liquid)) {
-        f.drag(liquid);
-      }
+
       float c = 0.01;
       PVector friction = f.velocity.get();
       float m = f.mass;
@@ -110,14 +98,11 @@ class Fish {
       f.checkEdges();
       f.display();
     }
-    if (foods.size() > 0) {
-      Food f = foods.get(f_i);
-      fish.attract(f.location);
+    if (cat_foods.size() > 0) {
+      Cat_food f = cat_foods.get(f_i);
+      cat.attract(f.location);
     }
-    fish.drag(liquid);
-    fish.update();
-    fish.checkWater(liquid);
-    fish.display();
+    cat.update();
+    cat.display();
   }
 }
-  
