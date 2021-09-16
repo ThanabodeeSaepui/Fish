@@ -4,8 +4,7 @@ Cat cat;
 ArrayList<Food> foods;
 ArrayList<Cat_food> cat_foods;
 void setup() {
-  fullScreen();
-  orientation(LANDSCAPE);
+  size(640,320);
   background(255);
   //fish = new Fish();
   //foods = new ArrayList<Food>();

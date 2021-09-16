@@ -36,12 +36,13 @@ class Cat {
   void update() {
     velocity.add(acceleration);
     location.add(velocity);
+    velocity.limit(2);
     acceleration = PVector.mult(acceleration,0);
   }
   void display() {
     stroke(0);
     fill(175,0,255,255);
-    ellipse(location.x,location.y,mass*20,mass*20);
+    ellipse(location.x,location.y,mass*width/15,mass*width/15);
   }
   void checkEdges() {
     if (location.x > width) {
@@ -71,6 +72,7 @@ class Cat {
       if (f.eaten(cat)) {
         cat_foods.remove(i);
         cat.addMass(0.1);
+        velocity.x *= 0.5;
         if (f_i > 0){
           f_i -= 1;
         }

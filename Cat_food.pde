@@ -42,7 +42,7 @@ class Cat_food {
   void display() {
     stroke(0);
     fill(240);
-    ellipse(location.x,location.y,mass*16,mass*16);
+    ellipse(location.x,location.y,mass*width/30,mass*width/30);
   }
   void checkEdges() {
     if (location.x > width) {
