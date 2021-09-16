@@ -18,6 +18,7 @@ void mousePressed() {
   
   Cat_food f = new Cat_food(mouseX,mouseY,0.8);
   cat_foods.add(f);
+  //cat.jump();
 }
 void draw() {
   //fish.drawGame();

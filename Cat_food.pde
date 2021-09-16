@@ -34,6 +34,7 @@ class Cat_food {
     PVector f = PVector.div(force,mass);
     acceleration.add(f);
   }
+  
   void update() {
     velocity.add(acceleration);
     location.add(velocity);

@@ -36,13 +36,29 @@ class Cat {
   void update() {
     velocity.add(acceleration);
     location.add(velocity);
-    velocity.limit(2);
+    velocity.limit(10);
     acceleration = PVector.mult(acceleration,0);
   }
   void display() {
     stroke(0);
     fill(175,0,255,255);
     ellipse(location.x,location.y,mass*width/15,mass*width/15);
+  }
+  void jump(){
+    PVector jump = new PVector(0,1.8*height/320);
+    acceleration.add(jump);
+  }
+  boolean floor(){
+    float h = location.array()[1];
+    float cat_radias = cat.mass*width/30;
+    println(h + cat_radias);
+    println(height);
+    if (height*29/30 >= h + cat_radias){
+      return false;
+    }
+    else {
+      return true;
+    }
   }
   void checkEdges() {
     if (location.x > width) {
@@ -91,14 +107,22 @@ class Cat {
       f.checkEdges();
       f.display();
     }
+    if (cat.floor()) {
+      PVector friction = new PVector(0,cat.velocity.array()[1]);
+      friction.mult(-1);
+      friction.normalize();
+      friction.mult(0.05);
+      cat.applyForce(friction);
+    }
+    float m = cat.mass;
+    PVector gravity = new PVector(0,0.1*m);
     PVector friction = cat.velocity.get();
     friction.mult(-1);
     friction.normalize();
     friction.mult(0.01);
-    float m = cat.mass;
-    PVector gravity = new PVector(0,0.1*m);
-    cat.applyForce(gravity);
     cat.applyForce(friction);
+    cat.applyForce(gravity);
+    
     if (cat_foods.size() > 0) {
       Cat_food f = cat_foods.get(f_i);
       cat.attract(f.location);
@@ -106,5 +130,6 @@ class Cat {
     cat.checkEdges();
     cat.update();
     cat.display();
+    println(cat.floor());
   }
 }
